@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mighty Starter - MAX.IO</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+
+    <link rel="stylesheet" href="http://beta.max.io/css/bootstrap.min.css">
+    <link rel="stylesheet" href="http://beta.max.io/css/main-grey.css">
+    <!--
+    <link rel="stylesheet" href="/bootstrap.min.css">
+    <link rel="stylesheet" href="/main-grey.css">
+    -->
+    <link rel="icon" type="image/x-icon" href="http://beta.max.io/logo/favicon.ico">
+
+    <style>
+
+        .search-bar {
+            margin-top:16px;
+            text-align:right;
+        }
+
+        .search-item-wrapper {
+            margin-bottom:20px;
+        }
+
+        .search-item {
+          background: #FFF;
+          position: relative;
+          margin: 0px;
+          padding:0px;
+          border: 7px solid #FFF;
+          -webkit-border-radius: 5px;
+          -webkit-background-clip: padding-box;
+          -moz-border-radius: 5px;
+          -moz-background-clip: padding;
+          border-radius: 5px;
+          background-clip: padding-box;
+          -webkit-box-shadow: inset 0 1px #fff,0 0 8px #c8cfe6;
+          -moz-box-shadow: inset 0 1px #fff,0 0 8px #c8cfe6;
+          box-shadow: inset 0 1px #fff,0 0 8px #c8cfe6;
+          color: inset 0 1px #fff,0 0 8px #c8cfe6;
+          height:160px;
+          overflow: scroll;
+        }
+
+        .item-title {
+            color:#1a1c1c;
+            font-weight: bold;
+            font-size:1.02em;
+        }
+
+        .item-title:hover {
+            color:#27963c;
+            font-weight: bold;
+            font-size:1.02em;
+            text-decoration: none;
+        }
+
+        .item-properties {
+            margin-top:5px;
+        }
+
+        .item-properties * {
+            font-size:0.98em;
+            vertical-align: top;
+        }
+
+        .item-rating {
+            font-size:1.5em;
+        }
+
+        /* Dark mode 
+        @media (prefers-color-scheme: dark) {
+            * {
+                background-color: #000!important;
+                color: #ded!important;
+            }
+        }
+        */
+    </style>
+
+</head>
+<body>
+    
+    <div class="section section-white">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-sm-12">
+                    <h1><img src="http://beta.max.io/logo/logo.png" alt="Logo" height=60> Mighty Instacommerce</h1>
+                </div>
+                <div class="col-md-6 col-sm-8 col-xs-10 search-bar">
+                    <form method=GET action="/" id="searchform">
+                        <input type="text" name="search" id="search" size=35 placeholder="search 1,215,690 products" /><input type="submit" value="🔎" />
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div id="results">
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Footer -->
+    <div class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-footer col-md-6 col-xs-12">
+                    <h3>Powered By</h3>
+                    <ul class="no-list-style footer-navigate-section">
+                        <li><a href="https://max.io">Mighty Inference Server</a></li>
+                        <li><a href="https://qdrant.tech">Qdrant Vector Search</a></li>
+                    </ul>
+                </div>
+                
+                <div class="col-footer col-md-6 col-xs-12">
+                    <h3>Get in touch!</h3>
+                    <ul class="no-list-style footer-navigate-section">
+                        <li><b>Email:</b> <a href="mailto:contact@max.io">contact@max.io</a></li>
+                        <li><b>Twitter:</b> <a href="https://twitter.com/binarymax">@binarymax</a></li>
+                        <li><b>LinkedIn:</b> <a href="https://www.linkedin.com/in/maxirwin">Max Irwin</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="footer-copyright">&copy; 2023 MAX.IO LLC. All rights reserved.</div>
+                </div>
+            </div>
+        </div>
+    </div>    
+
+    <script type="text/javascript">
+        (function(){
+
+            function result(r) {
+                let doc = r.payload;
+                let text = doc.text;
+                return `
+                    <div class="col-md-3 col-sm-4 col-xs-10 search-item-wrapper">
+                        <div class="search-item">
+                            <a href="${doc.id}" class="item-title">${doc.title}</a><br />
+                            <table class="item-properties">
+                                <tr><td>By:</td><td>${doc.brand}</td></tr>
+                                <tr><td>Color:</td><td>${doc.color||""}</td></tr>
+                                <!--<tr><td>Rating:</td><td><span class="item-rating">★★★☆☆</span></td></tr>-->
+                            </table>
+                            <em>(${r.score})</em>
+                        </div>
+                    </div>
+                `;
+            }
+
+            function showerror(err) {
+                document.getElementById("results").innerHTML = `
+                    <div class="row blog-post">
+                        <div class="col-sm-12">
+                            <pre>${err.toString()}</pre>
+                        </div>
+                    </div>`;
+            }
+
+            function fakeresults(){
+                const results_example=[
+                  {
+                    "id": "9a988511-522e-47c0-9d1c-8710098a1698",
+                    "version": 10098,
+                    "score": 0.51768017,
+                    "payload": {
+                      "IsAccepted": 0,
+                      "brand": "UGP Campus Apparel",
+                      "bullet_point": "Exclusive T Shirt from Underground Printing, Printed and Designed in the USA. Unisex fit that's Perfect for Boys and Girls. Great addition to any wardrobe.\nMachine washable (We suggest you wash inside out for a longer lasting print). Great for Christmas gifts, birthdays or just to treat yourself to a great graphic tee. Show off your dance moves and floss like a boss in this funny graphic t shirt! Show off your dance moves and floss like a boss in this funny graphic t shirt!\nPrinted on Gildan Cotton Youth Tee - 5.3 oz., pre-shrunk 100% cotton\n100% Satisfaction Guarantee, Available in youth S - XL This tee runs true to size and is pre-shrunk.",
+                      "color": "Pink",
+                      "description": "Underground Printing is a national custom printed apparel provider, offering screenprinting and embroidery on a wide variety of apparel and promotional products. Founded in 2001, Underground offers high quality products, great prices, and unmatched service to customers large and small, from national retailers and Fortune 500 companies to local businesses and college student groups. Underground provides you with high quality screenprinted and embroidered products customized with your designs. We began with t-shirts (which continue to be our specialty), but they are only the beginning of what we offer for custom decoration. Hoodies, polos, pens, hats, frisbees, magnets, jerseys, sweats, and more - we do it all at Underground Printing. We have Underground Printing stores throughout the nation in the heart of the communities we serve, and that list of communities is growing rapidly. At Underground Printing, it's our goal to make your order process as convenient and hands-on as possible. If it's convenient, stop by one of our stores to place your order, or you can always give us a call or order online. Think we would be a good fit in your area? Let us know! All of our garment print production is done in our state-of-the-art 55,000 sq. ft. production facility and warehouse located in southeast Michigan. We utilize top of the line equipment to fulfill your orders in a wide variety of decoration methods: screenprinting, embroidery, digital printing, vinyl heat seal, and more. We are proud to be manufacturing in the good ole U.S. of A. Our technology and infrastructure allows us to provide the best quality, the lowest prices, and with the shortest turn-arounds in the industry. It is these traits that have propelled our growth, allowing us to be ranked in Impressions Magazine's Top 50 high-volume screenprinters for 6 years and among Inc. Magazine's 5000 fastest growing companies for 3 years running.",
+                      "id": "B07GH4RR6G",
+                      "site": "esci",
+                      "text": "Floss Like A Boss - Flossin Dance Funny Emote Youth T Shirt - Small - Azalea Pink",
+                      "title": "Floss Like A Boss - Flossin Dance Funny Emote Youth T Shirt - Small - Azalea Pink"
+                    },
+                    "vector": null
+                  },
+                  {
+                    "id": "eb095710-0e2e-42b9-9689-e7f18903e597",
+                    "version": 40137,
+                    "score": 0.503974,
+                    "payload": {
+                      "IsAccepted": 0,
+                      "brand": "Cute Pig Gifts For Girls & Boys - Fun Oink Design",
+                      "bullet_point": "Oink! An adorable pink pig shirt that features a funny red pork. Funny t-shirt design with pig's trunk and big ears on a purple sweet face. The cute pig design turns out bright and colorful! Ideal for kids.\nAlso great gift idea for birthday, christmas & xmas. Surprise your kids, your daughter & son, friends, niece & nephew or family with a trendy and cool graphic design. Bring on happyness and fun with a tee, they will love it. Not only for farmer kids!\nLightweight, Classic fit, Double-needle sleeve and bottom hem",
+                      "color": "Black",
+                      "description": null,
+                      "id": "B07LH19GP1",
+                      "site": "esci",
+                      "text": "Oink Funny Pink Pig T-Shirt For Kids | Cute Gift T-Shirt",
+                      "title": "Oink Funny Pink Pig T-Shirt For Kids | Cute Gift T-Shirt"
+                    },
+                    "vector": null
+                  },
+                  {
+                    "id": "bf10beeb-0315-458d-a44d-f19b048b1bcb",
+                    "version": 15777,
+                    "score": 0.49733257,
+                    "payload": {
+                      "IsAccepted": 0,
+                      "brand": "TOOLOUD",
+                      "bullet_point": "For size chart, see secondary image\nPrint may be placed or sized differently, and colors may appear slightly different, than in the image shown.\nUnique, copyrighted design by TooLoud (Trademark) brand.\nAuthentic TooLoud brand, printed in the USA with pride.\nThis is not an unauthorized replica or counterfeit item. This is an original inspired design and does not infringe on any rights holders rights. The words used in the title and/or search terms are not intended to imply they are licensed by any rights holders.",
+                      "color": "Candy-pink",
+                      "description": "Planning to celebrate St. Patrick's Day? With print everyone will be able to keep pace with your beverage consumption. These fun printed garments are a great personal touch on you, or as a gift to a friend or loved one! Great for all-year-round too! Colors may differ from image, as each monitor is made and calibrated differently.",
+                      "id": "B07GT1YV71",
+                      "site": "esci",
+                      "text": "TOOLOUD Drunk Loading Bar Infant T-Shirt - Candy Pink - 06Months",
+                      "title": "TOOLOUD Drunk Loading Bar Infant T-Shirt - Candy Pink - 06Months"
+                    },
+                    "vector": null
+                  },
+                  {
+                    "id": "a846431a-4a94-448f-88cd-c11e35eaf79c",
+                    "version": 99542,
+                    "score": 0.49700975,
+                    "payload": {
+                      "IsAccepted": 0,
+                      "brand": "Fight Like a Girl",
+                      "bullet_point": "Shirt graphic reads: \"Supporting the fighters, admiring the survivors, honoring the taken, and never, ever giving up hope.\"\nUnisex fit, crew neck, short sleeve t-shirt\n100% cotton, preshrunk, jersey knit\nOfficial Fight Like a Girl brand\nA pink ribbon represents breast cancer awareness",
+                      "color": "Hot Pink",
+                      "description": "Show your support for every woman battling breast cancer, all breast cancer survivors, and all those taken from us by breast cancer with our exclusive Supporting the Fighters, Admiring the Survivors, Honoring the Taken, and Never Ever Giving Up Hope breast cancer support t-shirts featuring contrasting text fonts and our Signature pink ribbon in an eye-catching retro layout. Please note that Fight Like a Girl is the owner of a U.S. Registered Literary Copyright on the Supporting Admiring Honoring text. Fight Like a Girl - All Rights Reserved.",
+                      "id": "B01BEVPW1A",
+                      "site": "esci",
+                      "text": "Fight Like a Girl Supporting Admiring Honoring Breast Cancer Awareness Unisex T-Shirt - Hot Pink [XL]",
+                      "title": "Fight Like a Girl Supporting Admiring Honoring Breast Cancer Awareness Unisex T-Shirt - Hot Pink [XL]"
+                    },
+                    "vector": null
+                  },
+                  {
+                    "id": "08eb1ffc-f36c-4412-8e1c-018bdfa03f6d",
+                    "version": 95201,
+                    "score": 0.49532613,
+                    "payload": {
+                      "IsAccepted": 0,
+                      "brand": "Hippy on the Beach .",
+                      "bullet_point": "Turtley Related Design with a Funny Quote Take it Slow . Gift Idea for Adults , Teens , Toddlers ( Him , Her , Teenage , Youth , Mom , Best Friend ).\nCool Hawaiian Turtle Lovers Items Stuffs\nLightweight, Classic fit, Double-needle sleeve and bottom hem",
+                      "color": "Black",
+                      "description": null,
+                      "id": "B07NDYHVRH",
+                      "site": "esci",
+                      "text": "Funny Sea Turtle Hippie I Like Beach Tortoise Animal Love T-Shirt",
+                      "title": "Funny Sea Turtle Hippie I Like Beach Tortoise Animal Love T-Shirt"
+                    },
+                    "vector": null
+                  },
+                  {
+                    "id": "18bdc97a-a9d0-4305-a831-beeff0fcfa7a",
+                    "version": 54466,
+                    "score": 0.4838191,
+                    "payload": {
+                      "IsAccepted": 0,
+                      "brand": "Pinkfong",
+                      "bullet_point": "Original Pinkfong Baby Shark merchandise\nLightweight, Classic fit, Double-needle sleeve and bottom hem",
+                      "color": "Black",
+                      "description": null,
+                      "id": "B07FTX9DSX",
+                      "site": "esci",
+                      "text": "Womens Pinkfong Mommy Shark Official T-shirt",
+                      "title": "Womens Pinkfong Mommy Shark Official T-shirt"
+                    },
+                    "vector": null
+                  },
+                  {
+                    "id": "6980c26e-e132-472d-b06b-f57e9270342f",
+                    "version": 89894,
+                    "score": 0.4798714,
+                    "payload": {
+                      "IsAccepted": 0,
+                      "brand": "AUSUN",
+                      "bullet_point": "80% Cotton 20% Polyester soft skin friendly,breathable and lightweight,cool for the summer workout and outside wear\nSleeveless,Scoop neck,Racerback,Cute Printed,Colorful tie dye,Loose casual sporty workout clothes\nCute design perfectly with your pants, leggings, shorts, jackets for a cool everyday look.Great for yoga, exercise, fitness, gym, running or everyday daily wear\nStretchy soft fabric high quality cute printed will let you focus the compliment when you wear them workout for yoga,running,training.You will worth it\nTrue to size,Loose casual fit,the tie dye are random printing please allow a little color difference",
+                      "color": "Pink",
+                      "description": "<b>S(US2-4)---Bust:33.85\"/86cm--Front Length:24.80\"/63cm--Back Length:26.37\"/67cm<br> <b>S(US6-8)---Bust:37.00\"/94cm--Front Length:25.20\"/64cm--Back Length:26.77\"/68cm<br> <b>S(US10-12)---Bust:40.16\"/102cm--Front Length:25.98\"/66cm--Back Length:27.56\"/70cm<br> <b>XL(US14-16)--Bust:43.30\"/110cm--Front Length:26.37\"/67cm--Back Length:27.95\"/71cm<br> <b>2XL(US18-20)--Bust:45.67\"/116cm--Front Length:26.37\"/67cm--Back Length:27.95\"/71cm<br>",
+                      "id": "B08BKK9WB5",
+                      "site": "esci",
+                      "text": "Women's Sleeveless Workout Tank Tops Racerback Cute Printed Yoga Tops Tie Dye Loose Fit Running Exercise Gym T-Shirts Pink",
+                      "title": "Women's Sleeveless Workout Tank Tops Racerback Cute Printed Yoga Tops Tie Dye Loose Fit Running Exercise Gym T-Shirts Pink"
+                    },
+                    "vector": null
+                  },
+                  {
+                    "id": "2caa9723-a497-47d2-a34c-96c11c667461",
+                    "version": 35659,
+                    "score": 0.47144008,
+                    "payload": {
+                      "IsAccepted": 0,
+                      "brand": "KIMSOONG",
+                      "bullet_point": null,
+                      "color": null,
+                      "description": null,
+                      "id": "B083HX2S1G",
+                      "site": "esci",
+                      "text": "KIMSOONG Squad Glitter Letter Print Tank Top for Women Casual Beach Holiday Vest Sleeveless Tee Shirt Pink",
+                      "title": "KIMSOONG Squad Glitter Letter Print Tank Top for Women Casual Beach Holiday Vest Sleeveless Tee Shirt Pink"
+                    },
+                    "vector": null
+                  },
+                  {
+                    "id": "b56fa328-bd0b-479f-970b-6245506a1821",
+                    "version": 56882,
+                    "score": 0.47093666,
+                    "payload": {
+                      "IsAccepted": 0,
+                      "brand": "Old Glory",
+                      "bullet_point": "Officially Licensed Merchandise\nBrand New Quality Product\nMusic, Sports & Entertainment Item",
+                      "color": "Pink",
+                      "description": null,
+                      "id": "B004N8UDRU",
+                      "site": "esci",
+                      "text": "The Mountain Pig Face Adult T-Shirt, Pink, Medium",
+                      "title": "The Mountain Pig Face Adult T-Shirt, Pink, Medium"
+                    },
+                    "vector": null
+                  },
+                  {
+                    "id": "958a663f-ff96-4d12-88c9-38a5f1cb412f",
+                    "version": 89033,
+                    "score": 0.47086826,
+                    "payload": {
+                      "IsAccepted": 0,
+                      "brand": "Jorlyen",
+                      "bullet_point": "Funny graphic Workout tees tshirt, Cute summer short sleeves, Summer and whiskey women tops, stylish look for Beach, Street, Casual Wear, Fitness, Drinking Tees, Vacation. Comfy plus size shirts, great for Valentines Day, Christmas, Birthday, Anniversary, Graduation, Mothers Day.\nHigh cotton soft whiskey tees shirts, vintage rock tshirts short sleeve-Soft, Lightweight, Loose Fitting, Smooth, Breathable, Relaxed fit and Comfy. You'll love it.\nPlus size tees tops are machine Washable and hand Washable. The excellent workmanship and printing technique protect the tee from deformation and color fading. True to colors, crew neck design but not tight, great usual length for comfort, nice loose fit.\nSuitable for Spring, Summer, Autumn and Winter. Gift It for yourself, or your Mom, Wife, Daughter, Sister, Female friends, Whiskey Lovers or Sports Lovers. A good choice to match with shorts, or jeans, dress, leggings, high heels, boots in your daily life. Classic simple style can get an eyecatching look and you would get lots of compliments when you wear this fashion shirt.\n【Satisfactory Service for you】 We have a special department for the strict quality inspection before shipment, ensure that no quality problems, just give delivery. If you have any comments or suggestions on our products or service, you can give us a message, we will give you the first time to reply !",
+                      "color": "Grey",
+                      "description": null,
+                      "id": "B07WG1K9VS",
+                      "site": "esci",
+                      "text": "Sunshine and Whiskey Mama Workout Graphic Funny Vintage Tshirt Breathable Athletic Beach Shirts Top Tees for Women (Grey S)",
+                      "title": "Sunshine and Whiskey Mama Workout Graphic Funny Vintage Tshirt Breathable Athletic Beach Shirts Top Tees for Women (Grey S)"
+                    },
+                    "vector": null
+                  }
+                ];
+                showresults(results_example);
+            }
+
+            function showresults(res) {
+                //console.log(res);
+                var html = res.map(r=>result(r)).join('\n');
+                document.getElementById("results").innerHTML = html;
+            }
+
+            function search(text) {
+                fetch("/search?search="+encodeURI(text))
+                    .then(r=>r.json())
+                    .then(d=>showresults(d))
+                    .catch(err=>showerror(err));   
+            }
+
+            var query = new URLSearchParams(window.location.search);
+            if (query.has("search")) {
+                var text = query.get("search");
+                document.getElementById("search").value = text;
+                if (text.length) {
+                    search(text);
+                } else {
+                    document.getElementById("results").innerHTML = "";
+                }
+            }
+
+            //fakeresults();
+
+            let searchy = document.getElementById("search");
+            let typeahead = "";
+            let timeout = 0;
+            searchy.onkeyup = function(){
+                let valnorm = searchy.value.replace(/\s+/g,'');
+                let oldnorm = typeahead.replace(/\s+/g,'');
+                if (valnorm!=oldnorm) {
+                    typeahead = searchy.value.replace(/\s+/g,' ').replace(/^\s+/,'').replace(/\s+$/,'');
+                    if (typeahead.length) {
+                        timeout = setTimeout(function(){search(typeahead)},50);
+                    } else {
+                        document.getElementById("results").innerHTML = "";
+                    }
+                }
+            }
+            searchy.onkeydown = function(){
+                clearTimeout(timeout);
+            }
+
+        })();
+
+
+    </script>
+</body>
+</html>
