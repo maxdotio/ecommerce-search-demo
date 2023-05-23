@@ -44,6 +44,10 @@
           overflow: scroll;
         }
 
+        .search-item > img {
+            max-width:200px;
+        }
+
         .item-title {
             color:#1a1c1c;
             font-weight: bold;
@@ -141,6 +145,7 @@
                 return `
                     <div class="col-md-3 col-sm-4 col-xs-10 search-item-wrapper">
                         <div class="search-item">
+                            <img src="${doc.image}">
                             <a href="${doc.id}" class="item-title">${doc.title}</a><br />
                             <table class="item-properties">
                                 <tr><td>By:</td><td>${doc.brand}</td></tr>
@@ -351,6 +356,16 @@
                     .catch(err=>showerror(err));   
             }
 
+            function echo(text) {
+                fetch("/echo?search="+encodeURI(text)).then(()=>{});
+                    /*
+                    .then(function() {
+                        const newURL = window.location.pathname + '?search=' + encodeURI(query);
+                        window.location.replace('?search=' + encodeURI(query));
+                    });
+                    */
+            }
+
             var query = new URLSearchParams(window.location.search);
             if (query.has("search")) {
                 var text = query.get("search");
@@ -367,6 +382,7 @@
             let searchy = document.getElementById("search");
             let typeahead = "";
             let timeout = 0;
+            let echotime = 0;
             searchy.onkeyup = function(){
                 let valnorm = searchy.value.replace(/\s+/g,'');
                 let oldnorm = typeahead.replace(/\s+/g,'');
@@ -374,6 +390,7 @@
                     typeahead = searchy.value.replace(/\s+/g,' ').replace(/^\s+/,'').replace(/\s+$/,'');
                     if (typeahead.length) {
                         timeout = setTimeout(function(){search(typeahead)},50);
+                        echotime = setTimeout(function(){echo(typeahead)},5000);
                     } else {
                         document.getElementById("results").innerHTML = "";
                     }
@@ -381,6 +398,7 @@
             }
             searchy.onkeydown = function(){
                 clearTimeout(timeout);
+                clearTimeout(echotime);
             }
 
         })();

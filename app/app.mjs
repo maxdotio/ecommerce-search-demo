@@ -58,5 +58,14 @@ app.get("/search", async function (req, res) {
     }
 });
 
-app.listen(5005,"0.0.0.0");
-console.log("Application listening on http://localhost:5005");
+app.get("/echo", async function (req, res) {
+    const timestamp = new Date().toISOString();
+    const ipAddress = req.ip;
+    const querystring = req.query.search;
+    const logObject = {ts: timestamp,ip: ipAddress,q: querystring};
+    console.log(JSON.stringify(logObject));
+    res.sendStatus(200);
+});
+
+app.listen(80,"0.0.0.0");
+console.log("Application listening on http://localhost:80");
