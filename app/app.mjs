@@ -46,7 +46,17 @@ app.get("/search", async function (req, res) {
                 "top":TOP_K,
                 "params": {
                     "hnsw_ef": 128
-                }
+                },
+                "filter": {
+                    "must": [
+                        {
+                            "key": "type",
+                            "match": {
+                                "value": "product"
+                            }
+                        }
+                    ]
+                }              
             });
             if (qdrant_res.err) {
                 res.status(500).send(qdrant_res.err);
