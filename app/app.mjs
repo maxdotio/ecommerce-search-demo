@@ -3,7 +3,11 @@ import path from "path";
 import express from "express";
 import { Qdrant } from "qdrant";
 import { MightyPool } from "node-mighty";
+import { program } from "commander";
 
+const DEFAULT_PORT = 3000;
+program.option('-p, --port <port>', 'Specify the port number').parse(process.argv);
+const port = program.port || DEFAULT_PORT;
 
 ///
 /// Mighty & Qdrant Connections
@@ -77,5 +81,5 @@ app.get("/echo", async function (req, res) {
     res.sendStatus(200);
 });
 
-app.listen(80,"0.0.0.0");
+app.listen(port,"0.0.0.0");
 console.log("Application listening on http://localhost:80");

@@ -1,23 +1,54 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Mighty Starter - MAX.IO</title>
+    <title>Mighty Vector Search-as-you-Type | MAX.IO</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
+    <meta name="description" content="Better shopping with embeddings for your products and customer queries">
+    <meta name="keywords" content="vector search,ecommerce embeddings,ecommerce ai,shopping ai">
 
-    <link rel="stylesheet" href="http://beta.max.io/css/bootstrap.min.css">
-    <link rel="stylesheet" href="http://beta.max.io/css/main-grey.css">
+    <link rel="stylesheet" href="https://max.io/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://max.io/css/main-grey.css">
     <!--
     <link rel="stylesheet" href="/bootstrap.min.css">
     <link rel="stylesheet" href="/main-grey.css">
     -->
-    <link rel="icon" type="image/x-icon" href="http://beta.max.io/logo/favicon.ico">
+    <link rel="icon" type="image/x-icon" href="https://max.io/logo/favicon.ico">
+
+
+    <link rel="canonical" href="https://app.max.io/" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Mighty Vector Search-as-you-Type | MAX.IO" />
+    <meta property="og:description" content="Better shopping with embeddings for your products and customer queries" />
+    <meta property="og:url" content="https://app.max.io/" />
+    <meta property="og:site_name" content="MAX.IO" />
+    <meta property="article:published_time" content="2023-05-25T10:10:10+00:00" />
+    <meta property="article:modified_time" content="2023-05-25T10:10:10+00:00" />
+
+    <!-- FIX THE IMAGES -->
+
+    <meta property="og:image" content="https://max.io/img/fast-cart.png" />
+    <meta property="og:image:width" content="1092" />
+    <meta property="og:image:height" content="772" />
+    <meta property="og:image:type" content="image/png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:creator" content="@binarymax" />
+    <meta name="twitter:site" content="@binarymax" />
+    <meta name="twitter:label1" content="Est. reading time" />
+    <meta name="twitter:data1" content="1 minute" />
+    <meta name="twitter:image" content="https://max.io/img/fast-cart.png" />
+
 
     <style>
 
         .search-bar {
             margin-top:16px;
             text-align:right;
+        }
+
+        .search-item-wrapper-2 {
+            padding:8px;
         }
 
         .search-item-wrapper {
@@ -43,6 +74,26 @@
           height:360px;
           overflow: scroll;
         }
+
+        .search-item-2 {
+          background: #FFF;
+          position: relative;
+          margin: 0px;
+          padding:0px;
+          border: 7px solid #FFF;
+          -webkit-border-radius: 5px;
+          -webkit-background-clip: padding-box;
+          -moz-border-radius: 5px;
+          -moz-background-clip: padding;
+          border-radius: 5px;
+          background-clip: padding-box;
+          -webkit-box-shadow: inset 0 1px #fff,0 0 8px #c8cfe6;
+          -moz-box-shadow: inset 0 1px #fff,0 0 8px #c8cfe6;
+          box-shadow: inset 0 1px #fff,0 0 8px #c8cfe6;
+          color: inset 0 1px #fff,0 0 8px #c8cfe6;
+          height:420px;
+          overflow: auto;
+        }        
 
         .search-item > img {
             max-width:200px;
@@ -74,6 +125,20 @@
             font-size:1.5em;
         }
 
+        .hidden {
+            display: none;
+        }
+
+        .bigger {
+            font-size: 1.2em;
+            line-height: 1.2em;
+        }
+
+        .mighty-link {
+            color:#24B02F;
+            font-family:Tahoma,Helvetica,sans-serif;
+        }
+
         /* Dark mode 
         @media (prefers-color-scheme: dark) {
             * {
@@ -91,7 +156,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-6 col-sm-12">
-                    <h1><img src="http://beta.max.io/logo/logo.png" alt="Logo" height=60> Mighty Instacommerce</h1>
+                    <a href="/"><h1><img src="https://max.io/logo/logo.png" alt="Logo" height=60> Mighty Instacommerce</h1></a>
                 </div>
                 <div class="col-md-6 col-sm-8 col-xs-10 search-bar">
                     <form method=GET action="/" id="searchform">
@@ -103,6 +168,202 @@
         <div class="container">
             <div id="results">
             </div>
+        </div>
+    </div>
+
+    <div id="overview">
+        <!-- Page Body -->
+        <!-- Call to Action Bar -->
+        <div class="section">
+          <div class="container">
+            <div class="row hype">
+              <div class="col-md-12">
+                <h3>Welcome to the Vector-Search-As-You-Type demo!</h3>
+
+                <p class="bigger">Powered by <a href="https://max.io" class="mighty-link">MAX.IO</a>'s Mighty Inference Server and the new Ecommerce Embedding model.  Search 1.2 million Amazon products in a <a href="https://qdrant.tech" target="_blank" class="mighty-link">Qdrant</a> vector database collection.</p>
+
+                <p class="bigger">As you type, the search text is passed to Mighty to get a query embedding, and then the Qdrant collection is searched for the 24 nearest products with that embedding.  Since Mighty and Qdrant are so fast, we can serve keystoke responses under 50 milliseconds.  Stop paying money for numbers!  Skip the expensive APIs, and host a lighting fast and super accurate model in your own stack with <a href="https://max.io" class="mighty-link">Mighty Inference Server</a>.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="container">
+            <div class="row hype">
+              <div class="col-md-12">
+                <div class="calltoaction-wrapper">
+                  <h3>Introducing the <em>MAX.IO Ecommerce Embedding</em> model for your store's site-search.</h3>
+                </div>
+              </div>  
+              <div class="col-sm-12 hype">
+                <div class=row>
+                  <img src="https://max.io/img/fast-cart.png" class="col-md-4 col-sm-12 col-xs-12" />
+                  <div class="col-md-8 col-sm-12 case-study left">
+                    <p class="left">
+                            Enables customers to find the products they're looking for more quickly, leading to higher satisfaction rates and increased sales.
+                          </p>
+                            <p class="left"><strong>High Precision and Recall.</strong> Outperforms other embedding models by a wide margin.</p>
+                            <p class="left"><strong>Really Fast, no GPU needed!</strong> Up to 180 embeddings per second on a single CPU core.</p>
+                            <p class="left"><strong>Flexible experience.</strong>Designed for Mobile, Tablet, and Desktop result pages.</p>
+                            <p class="left"><strong>Deploy in your stack with zero lock-in.</strong> Build your store on your terms, not someone else's expensive API.</p>
+                          <p class="left">
+                            Easily plug it in to your existing site-search with Mighty connectors!
+                    </p class="left">
+                    <br />
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-12 col-sm-12 col-xs-12 case-study">
+                <p>
+                  <br />
+                <a href="mailto:contact@max.io?subject=Mighty+Ecommerce+Embeddings" class="btn btn-green" ping="https://max.io/?contact-us">Contact us for details!</a>
+                </p>
+              </div>          
+            </div>
+          </div>
+        </div>
+        <!-- End Call to Action Bar -->
+
+        <!-- Call to Action Bar -->
+        <div class="section">
+          <div class="container">
+            <div class="row hype">
+              <div class="col-md-12">
+                <div class="calltoaction-wrapper">
+                  <h3>Latency and Throughput Profile</h3>
+                </div>
+              </div>          
+              <div class="col-md-12 col-sm-12">
+                  <p>Example for 10,000 query requests, using only one CPU core.</p>
+                  <p>Add as many cores as needed for linear scalability!</p>
+                  <p><strong>Latency</strong>: Returns vectors in 8 milliseconds</p>
+                  <p><strong>Throughput</strong>: 136 queries per second</p>
+              </div>
+              <div class="col-sm-12 left">
+                <pre hype>
+Summary:
+  Total:  73.2846 secs
+  Slowest:  0.0119 secs
+  Fastest:  0.0071 secs
+  Average:  0.0073 secs
+  Requests/sec: 136.4544
+  
+  Total data: 619100001 bytes
+  Size/request: 61910 bytes
+
+Response time histogram:
+  0.007 [1]   |
+  0.008 [9358]|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+  0.008 [637] |■■■
+  0.009 [2]   |
+  0.009 [0]   |
+  0.010 [0]   |
+  0.010 [0]   |
+  0.010 [0]   |
+  0.011 [0]   |
+  0.011 [1]   |
+  0.012 [1]   |
+
+
+Latency distribution:
+  10% in 0.0073 secs
+  25% in 0.0073 secs
+  50% in 0.0073 secs
+  75% in 0.0073 secs
+  90% in 0.0074 secs
+  95% in 0.0076 secs
+  99% in 0.0078 secs
+
+Details (average, fastest, slowest):
+  DNS+dialup: 0.0000 secs, 0.0071 secs, 0.0119 secs
+  DNS-lookup: 0.0000 secs, 0.0000 secs, 0.0005 secs
+  req write:  0.0000 secs, 0.0000 secs, 0.0011 secs
+  resp wait:  0.0073 secs, 0.0071 secs, 0.0109 secs
+  resp read:  0.0000 secs, 0.0000 secs, 0.0007 secs
+
+Status code distribution:
+  [200] 10000 responses
+                </pre>
+              </div>
+              <div class="col-md-12 col-sm-12 case-study">
+                <p>
+                  <br />
+                <a href="mailto:contact@max.io?subject=Mighty+Ecommerce+Embeddings" class="btn btn-green" ping="https://max.io/?contact-us">Contact us for details!</a>
+                </p>
+              </div>              
+            </div>
+          </div>
+        </div>
+        <!-- End Call to Action Bar -->
+
+
+        <!-- Call to Action Bar -->
+        <div class="section">
+          <div class="container">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="calltoaction-wrapper">
+                  <h3>Connects to any Vector Search Engine!</h3>
+                </div>
+              </div>          
+              <div class="col-sm-12">
+                <img src="https://max.io/img/mighty-connectors-vertical.png" class="col-md-12 col-sm-12 col-xs-12 hype" />
+              </div>   
+            </div>
+          </div>
+        </div>
+        <!-- End Call to Action Bar -->
+            
+
+        <!-- Call to Action Bar -->
+        <div class="section">
+          <div class="container">
+            <div class="row hype">
+              <div class="col-md-12">
+                <div class="calltoaction-wrapper">
+                  <h3>Accuracy Results*</h3>
+                </div>
+              </div>          
+              <div class="col-sm-12 hype">
+                <div class="table-responsive">
+                  <table class="table left">
+                    <thead>
+                      <tr>
+                        <th>Model</th>
+                        <th>ndcg@1</th>
+                        <th>ndcg@4</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><strong>max.io/ecommerce-encoder-v01 (Ours)</strong></td>
+                        <td><strong>0.77</strong></td>
+                        <td><strong>0.73</strong></td>
+                      </tr>
+                      <tr>
+                        <td>sentence-transformers/all-MiniLM-L6-v2</td>
+                        <td>0.68</td>
+                        <td>0.65</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="col-md-12 col-sm-12">
+                  <p><em>*nDCG for Amazon-Science ESCI ranking benchmark.</em></p>
+                  <p>
+                    <strong>Bundle it with a Mighty cross-encoder for even better results!</strong>
+                  </p>
+              </div>
+              <div class="col-md-12 col-sm-12 case-study">
+                <p>
+                  <br />
+                <a href="mailto:contact@max.io?subject=Mighty+Ecommerce+Embeddings" class="btn btn-green" ping="https://max.io/?contact-us">Contact us for details!</a>
+                </p>
+              </div>              
+            </div>
+          </div>
         </div>
     </div>
 
@@ -139,21 +400,47 @@
     <script type="text/javascript">
         (function(){
 
+            function stars(rating) {
+                let ratingMatch = rating.toString().match(/\d+(\.\d+)?/);
+                if(!ratingMatch || !ratingMatch.length) return ''
+                let ratingValue = parseFloat(ratingMatch[0]);
+                let filledStarsCount = Math.floor(ratingValue);
+                let hasHalfStar = ratingValue % 1 !== 0;
+                let emptyStarsCount = 5 - filledStarsCount - (hasHalfStar ? 1 : 0);
+                let filledStars = '★'.repeat(filledStarsCount);
+                let halfStar = hasHalfStar ? '✬' : '';
+                let emptyStars = '☆'.repeat(emptyStarsCount);
+                return filledStars + halfStar + emptyStars;
+            }
+
             function result(r) {
                 let doc = r.payload;
                 let text = doc.text;
+                let brand = doc.brand?`By: ${doc.brand}`:'';
+                let rating = stars(doc.stars);
+                /*
                 return `
                     <div class="col-md-3 col-sm-4 col-xs-10 search-item-wrapper">
                         <div class="search-item">
                             <img src="${doc.image}"><br />
-                            <a href="${doc.id}" class="item-title">${doc.title}</a><br />
-                            <table class="item-properties">
-                                <tr><td>By:</td><td>${doc.brand}</td></tr>
-                                <tr><td>Color:</td><td>${doc.color||""}</td></tr>
-                                <!--<tr><td>Rating:</td><td><span class="item-rating">★★★☆☆</span></td></tr>-->
-                            </table>
-                            <em>(${r.score})</em>
+                            <h5 class="card-title">${doc.title}</h5>
+                            <p>${brand}</p>
+                            <h4>${rating}</h4>
+                            <p><em>(${r.score})</em></p>
                         </div>
+                    </div>
+                `;
+                */
+                return `
+                    <div class="col-md-4 search-item-wrapper-2">
+                      <div class="card mb-4 search-item-2">
+                        <img src="${doc.image}" class="card-img-top" alt="Product Image">
+                        <div class="card-body">
+                          <h5 class="card-title">${doc.title}</h5>
+                        </div>
+                        <p class="card-text">${rating}</p>
+                        <p class="card-text"><em>cosine similarity: ${r.score}</em></p>
+                      </div>
                     </div>
                 `;
             }
@@ -350,10 +637,15 @@
             }
 
             function search(text) {
-                fetch("/search?search="+encodeURI(text))
-                    .then(r=>r.json())
-                    .then(d=>showresults(d))
-                    .catch(err=>showerror(err));   
+                if (text && text.length) {
+                    document.getElementById("overview").classList.add("hidden");
+                    fetch("/search?search="+encodeURI(text))
+                        .then(r=>r.json())
+                        .then(d=>showresults(d))
+                        .catch(err=>showerror(err));
+                } else {
+                    document.getElementById("overview").classList.remove("hidden");
+                }
             }
 
             function echo(text) {
@@ -393,6 +685,7 @@
                         echotime = setTimeout(function(){echo(typeahead)},5000);
                     } else {
                         document.getElementById("results").innerHTML = "";
+                        document.getElementById("overview").classList.remove("hidden");
                     }
                 }
             }

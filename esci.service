@@ -5,7 +5,7 @@ After=network.target
 [Service]
 Type=simple
 WorkingDirectory=/home/ubuntu/esci/app
-ExecStart=/home/ubuntu/.nvm/versions/node/v16.20.0/bin/node app.mjs
+ExecStart=/home/ubuntu/.nvm/versions/node/v16.20.0/bin/node app.mjs -p 3000
 Restart=always
 RestartSec=3
 User=ubuntu
